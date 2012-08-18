@@ -1,0 +1,39 @@
+Name:                mycloud
+Version:             0.1
+
+Synopsis:            myCloud cloud storage
+Description:         myCloud cloud storage
+
+License:             BSD3
+License-file:        LICENSE
+Author:              Nils Schweinsberg <mail@nils.cc>
+Maintainer:          mail@nils.cc
+-- Copyright:           
+
+Category:            Network
+
+Build-type:          Custom
+Cabal-version:       >=1.2
+
+-- Extra-source-files:  
+
+Library
+
+  HS-source-dirs:    src
+  GHC-options:       -O2
+
+  Build-depends:       
+    base, mtl, containers, network, bytestring,
+    HDBC, HDBC-postgresql,
+    SimpleAES,
+    protocol-buffers, protocol-buffers-descriptor,
+    mstate >= 0.2.6
+
+  Exposed-modules:
+    MyCloud
+    MyCloud.Types
+    MyCloud.Files
+  Other-modules:       
+    MyCloud.DB
+    MyCloud.Proto
+    MyCloud.Internal.Types
