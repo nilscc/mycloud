@@ -1,38 +1,38 @@
 package MyCloudProto;
 
 message Helo {
-  optional int32 session = 0;
+  optional int32 session = 1;
 
   enum Command {
-    SEND_FILE         = 0;
-    RESUME_FILE       = 1;
-    SUCCESS           = 2;
-    FAILURE           = 3;
-    ENABLE_ENCRYPTION = 4;
+    SEND_FILE         = 1;
+    RESUME_FILE       = 2;
+    SUCCESS           = 3;
+    FAILURE           = 4;
+    ENABLE_ENCRYPTION = 5;
   }
-  required Command cmd = 1;
+  required Command cmd = 2;
 
-  optional string args = 2;
+  optional string args = 3;
 }
 
 message File {
-  required string file_path = 0;
+  required string file_path = 1;
 
   message Block {
-    required int32 block_id = 0;
+    required int32 block_id = 1;
     required bytes block_bytes = 2;
   }
-  repeated Block blocks = 1;
+  repeated Block blocks = 2;
 
   // message Permissions {
   //   message ReadWriteExecute {
-  //     required bool read_permission    = 0 [default = true];
-  //     required bool write_permission   = 1 [default = false];
-  //     required bool execute_permission = 2 [default = false];
+  //     required bool read_permission    = 1 [default = true];
+  //     required bool write_permission   = 2 [default = false];
+  //     required bool execute_permission = 3 [default = false];
   //   }
-  //   optional ReadWriteExecute user_permissions  = 0;
-  //   optional ReadWriteExecute group_permissions = 1;
-  //   optional ReadWriteExecute other_permissions = 2;
+  //   optional ReadWriteExecute user_permissions  = 1;
+  //   optional ReadWriteExecute group_permissions = 2;
+  //   optional ReadWriteExecute other_permissions = 3;
   // }
-  // optional Permissions file_options = 2;
+  // optional Permissions file_options = 3;
 }
