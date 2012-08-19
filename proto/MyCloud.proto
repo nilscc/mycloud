@@ -21,6 +21,7 @@ message File {
   message Block {
     required int32 block_id = 1;
     required bytes block_bytes = 2;
+    required int32 block_size = 3;
   }
   repeated Block blocks = 2;
 

@@ -1,7 +1,7 @@
 {-# LANGUAGE ViewPatterns #-}
 
 module MyCloud.Files
-  ( toFile, fromFile, fromFile'
+  ( toCloudFile, fromCloudFile, fromCloudFile'
   , storeFile, loadFile
   -- , blockSize, numberOfBlocks
   ) where
@@ -28,8 +28,8 @@ blockSize = 512 * 1024
 --------------------------------------------------------------------------------
 -- Reading from/writing to real files
 
-toFile :: MonadIO m => FilePath -> m File
-toFile fp = File (fromString fp) `liftM` toBlocks fp
+toCloudFile :: MonadIO m => FilePath -> m File
+toCloudFile fp = File (fromString fp) `liftM` toBlocks fp
 
 toBlocks :: MonadIO m => FilePath -> m (Seq Block)
 toBlocks fp = liftIO $ do
@@ -43,18 +43,19 @@ toBlocks fp = liftIO $ do
        then hClose h >> return s
        else go h (bid+1) $
             s S.|> Block { block_id    = bid
-                         , block_bytes = bytes }
+                         , block_bytes = bytes
+                         , block_size  = fromIntegral blockSize }
 
-fromFile :: MonadIO m => File -> m ()
-fromFile (File (toString -> fp) bs) = liftIO $
+fromCloudFile :: MonadIO m => File -> m ()
+fromCloudFile (File (toString -> fp) bs) = liftIO $
   withBinaryFile fp WriteMode $ \h -> do
     hSetBinaryMode h True
     F.forM_ bs $ \b -> do
       --putStrLn $ "Writing block #" ++ show (block_id b)
       BL.hPut h (block_bytes b)
 
-fromFile' :: MonadIO m => FilePath -> File -> m ()
-fromFile' fp f = fromFile f{ file_path = fromString fp }
+fromCloudFile' :: MonadIO m => FilePath -> File -> m ()
+fromCloudFile' fp f = fromCloudFile f{ file_path = fromString fp }
 
 --------------------------------------------------------------------------------
 -- Loading/storing PB Files

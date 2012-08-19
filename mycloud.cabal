@@ -24,6 +24,7 @@ Library
 
   Build-depends:       
     base, mtl, containers, network, bytestring,
+    data-accessor,
     HDBC, HDBC-postgresql,
     SimpleAES,
     protocol-buffers, protocol-buffers-descriptor,
