@@ -1,10 +1,13 @@
-module MyCloud where
+module MyCloud
+  ( module MyCloud.Types
+  , module MyCloud.Files
+  ) where
 
 import Database.HDBC.PostgreSQL
 import Network
 
 import MyCloud.Types
---import MyCloud.Files
+import MyCloud.Files
 
 postgresConf :: Config
 postgresConf = Config

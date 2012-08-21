@@ -1,39 +1,48 @@
 package MyCloudProto;
 
-message Helo {
-  optional int32 session = 1;
+message Message {
+  required uint32 session = 1;
 
   enum Command {
-    SEND_FILE         = 1;
-    RESUME_FILE       = 2;
+    HELO              = 1;
+    LISTEN            = 2;
     SUCCESS           = 3;
     FAILURE           = 4;
-    ENABLE_ENCRYPTION = 5;
+    AUTH              = 5;
+    ENABLE_ENCRYPT    = 6;
+    CREATE_DIR        = 7;
+    DELETE_DIR        = 8;
+    SEND_FILE         = 9;
+    RESUME_FILE       = 10;
+    DELETE_FILE       = 11;
+    CONFLICT          = 12;
+    RAW_BYTES         = 13;
   }
   required Command cmd = 2;
 
-  optional string args = 3;
+  repeated string arguments = 3;
+  optional bytes  data      = 4;
 }
 
-message File {
+message FileInfo {
   required string file_path = 1;
-
-  message Block {
-    required int32 block_id = 1;
-    required bytes block_bytes = 2;
-    required int32 block_size = 3;
-  }
-  repeated Block blocks = 2;
-
-  // message Permissions {
-  //   message ReadWriteExecute {
-  //     required bool read_permission    = 1 [default = true];
-  //     required bool write_permission   = 2 [default = false];
-  //     required bool execute_permission = 3 [default = false];
-  //   }
-  //   optional ReadWriteExecute user_permissions  = 1;
-  //   optional ReadWriteExecute group_permissions = 2;
-  //   optional ReadWriteExecute other_permissions = 3;
-  // }
-  // optional Permissions file_options = 3;
+  required uint64 file_size = 2;
+  optional uint64 file_bytes_already_sent = 3;
 }
+
+// message Block {
+//   required uint64 block_id    = 1;
+//   required bytes  block_bytes = 2;
+//   required uint32 block_size  = 3;
+// }
+
+// message Permissions {
+//   message ReadWriteExecute {
+//     required bool read_permission    = 1 [default = true];
+//     required bool write_permission   = 2 [default = false];
+//     required bool execute_permission = 3 [default = false];
+//   }
+//   optional ReadWriteExecute user_permissions  = 1;
+//   optional ReadWriteExecute group_permissions = 2;
+//   optional ReadWriteExecute other_permissions = 3;
+// }
