@@ -14,7 +14,7 @@ CREATE TABLE clients
 
 CREATE TABLE sessions
   ( id            serial
-  , client_id     int
+  , client_id     int NOT NULL
   , PRIMARY KEY (id)
   , FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
   );
@@ -26,9 +26,9 @@ CREATE OR REPLACE VIEW session_clients AS
 
 CREATE TABLE events
   ( id        serial
-  , time      timestamp with time zone
-  , path      text
-  , event     int
+  , time      timestamp with time zone NOT NULL
+  , path      text NOT NULL
+  , event     int NOT NULL
   , PRIMARY KEY (id)
   );
 
