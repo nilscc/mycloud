@@ -6,8 +6,7 @@ module MyCloud.Internal.Types where
 import Control.Monad.Reader
 import Control.Concurrent.MState
 import Data.Map (Map)
---import Data.ByteString.Lazy (ByteString)
-import Database.HDBC.PostgreSQL
+import Data.Time
 import Network
 import System.IO
 
@@ -20,9 +19,9 @@ data FileWithInfo = FileWithInfo
 -- Cloud configuration
 
 data Config = Config
-  { runOn       :: PortID
-  , encryption  :: Encryption
-  , postgreSQL  :: IO Connection
+  { runOn                 :: PortID
+  , encryption            :: Encryption
+  , postgresqlConnection  :: String
   }
 
 newtype BlockSize = BlockSize { unBS :: Int }
@@ -52,4 +51,25 @@ data ClientInfo = ClientInfo
 -- The cloud monad
 
 newtype MyCloud a = MyCloud { runMC :: MState CloudState (ReaderT Config IO) a }
-  deriving (Monad, MonadIO)
+  deriving (Monad, MonadIO, Functor)
+
+
+--------------------------------------------------------------------------------
+-- Events
+
+data Event = Event
+  { eventTime     :: UTCTime
+  , eventPath     :: FilePath
+  , eventType     :: EventType
+  }
+  deriving (Eq, Show)
+
+data EventType
+  = CreateFile
+  | ChangeFile
+  | DeleteFile
+  | RenameFile
+  | CreateDir
+  | DeleteDir
+  | RenameDir
+  deriving (Eq, Show, Enum)
